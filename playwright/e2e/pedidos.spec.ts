@@ -1,44 +1,20 @@
-import { expect, test } from '../support/fixtures'
+import { test, expect } from '../support/fixtures'
 import { generateOrderCode } from '../support/helpers'
 import type { OrderDetails } from '../support/actions/orderLookupActions'
 import { insertOrder, deleteOrderByNumber } from '../support/database/orderRepository'
-import crypto from 'crypto'
+import testData from '../support/fixtures/orders.json' with { type: 'json' }
 
 test.describe('Consulta de Pedido', () => {
+
   test.beforeEach(async ({ app }) => {
     await app.orderLookup.open()
   })
 
   test('deve consultar um pedido aprovado', async ({ app }) => {
-    const code = generateOrderCode()
-    const order: OrderDetails = {
-      number: code,
-      status: 'APROVADO',
-      color: 'Glacier Blue',
-      wheels: 'aero Wheels',
-      customer: {
-        name: 'Neymar Junior',
-        email: 'neymar@velo.dev',
-      },
-      payment: 'À Vista',
-    }
+    const order: OrderDetails = testData.aprovado as OrderDetails
 
-    await insertOrder({
-      id: crypto.randomUUID(),
-      order_number: code,
-      color: 'glacier-blue',
-      wheel_type: 'aero',
-      customer_name: order.customer.name,
-      customer_email: order.customer.email,
-      customer_phone: '(13) 99999-9999',
-      customer_cpf: '780.228.290-05',
-      payment_method: 'avista',
-      total_price: '40000',
-      status: order.status,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-      optionals: [],
-    })
+    await deleteOrderByNumber(order.number)
+    await insertOrder(order)
 
     await app.orderLookup.searchOrder(order.number)
     await app.orderLookup.validateOrderDetails(order)
@@ -46,35 +22,10 @@ test.describe('Consulta de Pedido', () => {
   })
 
   test('deve consultar um pedido reprovado', async ({ app }) => {
-    const code = generateOrderCode()
-    const order: OrderDetails = {
-      number: code,
-      status: 'REPROVADO',
-      color: 'Midnight Black',
-      wheels: 'sport Wheels',
-      customer: {
-        name: 'Lebron James',
-        email: 'james@dev.com',
-      },
-      payment: 'À Vista',
-    }
+    const order: OrderDetails = testData.reprovado as OrderDetails
 
-    await insertOrder({
-      id: crypto.randomUUID(),
-      order_number: code,
-      color: 'midnight-black',
-      wheel_type: 'sport',
-      customer_name: order.customer.name,
-      customer_email: order.customer.email,
-      customer_phone: '(13) 99999-9999',
-      customer_cpf: '780.228.290-05',
-      payment_method: 'avista',
-      total_price: '40000',
-      status: order.status,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-      optionals: [],
-    })
+    await deleteOrderByNumber(order.number)
+    await insertOrder(order)
 
     await app.orderLookup.searchOrder(order.number)
     await app.orderLookup.validateOrderDetails(order)
@@ -82,35 +33,10 @@ test.describe('Consulta de Pedido', () => {
   })
 
   test('deve consultar um pedido em analise', async ({ app }) => {
-    const code = generateOrderCode()
-    const order: OrderDetails = {
-      number: code,
-      status: 'EM_ANALISE',
-      color: 'Lunar White',
-      wheels: 'aero Wheels',
-      customer: {
-        name: 'Steph Curry',
-        email: 'curry@velo.dev',
-      },
-      payment: 'À Vista',
-    }
+    const order: OrderDetails = testData.em_analise as OrderDetails
 
-    await insertOrder({
-      id: crypto.randomUUID(),
-      order_number: code,
-      color: 'lunar-white',
-      wheel_type: 'aero',
-      customer_name: order.customer.name,
-      customer_email: order.customer.email,
-      customer_phone: '(13) 99999-9999',
-      customer_cpf: '780.228.290-05',
-      payment_method: 'avista',
-      total_price: '40000',
-      status: order.status,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-      optionals: [],
-    })
+    await deleteOrderByNumber(order.number)
+    await insertOrder(order)
 
     await app.orderLookup.searchOrder(order.number)
     await app.orderLookup.validateOrderDetails(order)
@@ -133,7 +59,7 @@ test.describe('Consulta de Pedido', () => {
     const button = app.orderLookup.elements.searchButton
     await expect(button).toBeDisabled()
 
-    await app.orderLookup.elements.orderInput.fill('  ')
+    await app.orderLookup.elements.orderInput.fill('     ')
     await expect(button).toBeDisabled()
   })
 })

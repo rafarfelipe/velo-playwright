@@ -1,24 +1,23 @@
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig, devices } from '@playwright/test'
 
-import dotenv from 'dotenv';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import dotenv from 'dotenv'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
-dotenv.config({ path: path.resolve(__dirname, '.env') });
+dotenv.config({ path: path.resolve(__dirname, '.env') })
 
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  
   // Tempo máximo para cada teste completo (30 segundo é o padrão)
   timeout: 60_000,
 
   // Tempo máximo para assertions (toBeVisible(), toHaveText()) 5 segundos
   expect: {
-    timeout: 5000 // Não vale a pena aumentar, porque o teste pode ficar mais lento no tempo de execução
+    timeout: 5000, // Não vale a pena aumentar, porque o teste pode ficar mais lento no tempo de execução
   },
 
   testDir: './playwright/e2e',
@@ -46,14 +45,16 @@ export default defineConfig({
 
     // Tempo máximo para navegações como goto(), waitForURL()
     // Quando o valor é 0, herda o limte do timeout geral do teste
-    navigationTimeout: 10_000
+    navigationTimeout: 10_000,
   },
 
   /* Configure projects for major browsers */
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: {
+        ...devices['Desktop Chrome'],
+      },
     },
 
     // {
@@ -93,4 +94,4 @@ export default defineConfig({
   //   url: 'http://localhost:3000',
   //   reuseExistingServer: !process.env.CI,
   // },
-});
+})
