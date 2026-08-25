@@ -1,7 +1,15 @@
 import { Page, expect } from '@playwright/test'
 
 export function createCheckoutActions(page: Page) {
+
+  const terms = page.getByTestId('checkout-terms')
+
   return {
+
+    elements: {
+      terms
+    },
+
     async expectLoaded() {
       await expect(page.getByRole('heading', { name: 'Finalizar Pedido' })).toBeVisible()
     },
@@ -38,7 +46,7 @@ export function createCheckoutActions(page: Page) {
     },
 
     async acceptTerms() {
-      await page.getByTestId('checkout-terms').check()
+      await terms.check()
     },
 
     async submit() {

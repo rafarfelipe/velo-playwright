@@ -107,6 +107,8 @@ test.describe('Checkout', () => {
       await app.checkout.fillCustomerlData(customer)
       await app.checkout.selectStore('Velô Paulista')
 
+      await expect(app.checkout.elements.terms).not.toBeChecked()
+
       await app.checkout.submit()
 
       await expect(termsAlert).toHaveText('Aceite os termos')
