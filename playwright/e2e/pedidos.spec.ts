@@ -1,6 +1,8 @@
 import { expect, test } from '../support/fixtures'
 import { generateOrderCode } from '../support/helpers'
 import type { OrderDetails } from '../support/actions/orderLookupActions'
+import { insertOrder, deleteOrderByNumber } from '../support/database/orderRepository'
+import crypto from 'crypto'
 
 test.describe('Consulta de Pedido', () => {
   test.beforeEach(async ({ app }) => {
@@ -8,17 +10,35 @@ test.describe('Consulta de Pedido', () => {
   })
 
   test('deve consultar um pedido aprovado', async ({ app }) => {
+    const code = generateOrderCode()
     const order: OrderDetails = {
-      number: 'VLO-WGILT7',
-      status: 'APROVADO' as const,
-      color: 'Lunar White',
+      number: code,
+      status: 'APROVADO',
+      color: 'Glacier Blue',
       wheels: 'aero Wheels',
       customer: {
-        name: 'Ravena Felipe',
-        email: 'ravena@velo.dev',
+        name: 'Neymar Junior',
+        email: 'neymar@velo.dev',
       },
       payment: 'À Vista',
     }
+
+    await insertOrder({
+      id: crypto.randomUUID(),
+      order_number: code,
+      color: 'glacier-blue',
+      wheel_type: 'aero',
+      customer_name: order.customer.name,
+      customer_email: order.customer.email,
+      customer_phone: '(13) 99999-9999',
+      customer_cpf: '780.228.290-05',
+      payment_method: 'avista',
+      total_price: '40000',
+      status: order.status,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      optionals: [],
+    })
 
     await app.orderLookup.searchOrder(order.number)
     await app.orderLookup.validateOrderDetails(order)
@@ -26,9 +46,10 @@ test.describe('Consulta de Pedido', () => {
   })
 
   test('deve consultar um pedido reprovado', async ({ app }) => {
-    const order = {
-      number: 'VLO-TZFCFQ',
-      status: 'REPROVADO' as const,
+    const code = generateOrderCode()
+    const order: OrderDetails = {
+      number: code,
+      status: 'REPROVADO',
       color: 'Midnight Black',
       wheels: 'sport Wheels',
       customer: {
@@ -38,15 +59,33 @@ test.describe('Consulta de Pedido', () => {
       payment: 'À Vista',
     }
 
+    await insertOrder({
+      id: crypto.randomUUID(),
+      order_number: code,
+      color: 'midnight-black',
+      wheel_type: 'sport',
+      customer_name: order.customer.name,
+      customer_email: order.customer.email,
+      customer_phone: '(13) 99999-9999',
+      customer_cpf: '780.228.290-05',
+      payment_method: 'avista',
+      total_price: '40000',
+      status: order.status,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      optionals: [],
+    })
+
     await app.orderLookup.searchOrder(order.number)
     await app.orderLookup.validateOrderDetails(order)
     await app.orderLookup.validateStatusBadge(order.status)
   })
 
   test('deve consultar um pedido em analise', async ({ app }) => {
-    const order = {
-      number: 'VLO-J2UC9V',
-      status: 'EM_ANALISE' as const,
+    const code = generateOrderCode()
+    const order: OrderDetails = {
+      number: code,
+      status: 'EM_ANALISE',
       color: 'Lunar White',
       wheels: 'aero Wheels',
       customer: {
@@ -55,6 +94,23 @@ test.describe('Consulta de Pedido', () => {
       },
       payment: 'À Vista',
     }
+
+    await insertOrder({
+      id: crypto.randomUUID(),
+      order_number: code,
+      color: 'lunar-white',
+      wheel_type: 'aero',
+      customer_name: order.customer.name,
+      customer_email: order.customer.email,
+      customer_phone: '(13) 99999-9999',
+      customer_cpf: '780.228.290-05',
+      payment_method: 'avista',
+      total_price: '40000',
+      status: order.status,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      optionals: [],
+    })
 
     await app.orderLookup.searchOrder(order.number)
     await app.orderLookup.validateOrderDetails(order)

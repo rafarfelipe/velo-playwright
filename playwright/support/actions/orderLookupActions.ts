@@ -65,7 +65,7 @@ export function createOrderLookupActions(page: Page) {
       - paragraph: /\\d+\\/\\d+\\/\\d+/
       - heading "Pagamento" [level=4]
       - paragraph: ${order.payment}
-      - paragraph: /R\\$ \\d+\\.\\d+,\\d+/
+      - paragraph: /R\\$.*\\d{1,3}(\\.\\d{3})*,\\d{2}/
       `
       await expect(
         page.getByTestId(`order-result-${order.number}`),
