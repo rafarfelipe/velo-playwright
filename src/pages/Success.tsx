@@ -1,16 +1,16 @@
-import { useLocation, useNavigate, Navigate, Link } from 'react-router-dom'
-import { CheckCircle, XCircle } from 'lucide-react'
-import { cn } from '@/lib/utils'
-import { Button } from '@/components/ui/button'
-import { Order, formatPrice, ExteriorColor, WheelType } from '@/store/configuratorStore'
+import { useLocation, useNavigate, Navigate, Link } from 'react-router-dom';
+import { CheckCircle, XCircle, Clock } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Order, formatPrice, ExteriorColor, WheelType } from '@/store/configuratorStore';
 
-import logo from '@/assets/brand.svg'
-import glacierBlueAero from '@/assets/glacier-blue-aero-wheels.png'
-import glacierBlueSport from '@/assets/glacier-blue-sport-wheels.png'
-import lunarWhiteAero from '@/assets/lunar-white-aero-wheels.png'
-import lunarWhiteSport from '@/assets/lunar-white-sport-wheels.png'
-import midnightBlackAero from '@/assets/midnight-black-aero-wheels.png'
-import midnightBlackSport from '@/assets/midnight-black-sport-wheels.png'
+import logo from '@/assets/brand.svg';
+import glacierBlueAero from '@/assets/glacier-blue-aero-wheels.png';
+import glacierBlueSport from '@/assets/glacier-blue-sport-wheels.png';
+import lunarWhiteAero from '@/assets/lunar-white-aero-wheels.png';
+import lunarWhiteSport from '@/assets/lunar-white-sport-wheels.png';
+import midnightBlackAero from '@/assets/midnight-black-aero-wheels.png';
+import midnightBlackSport from '@/assets/midnight-black-sport-wheels.png';
 
 const exteriorImages: Record<ExteriorColor, Record<WheelType, string>> = {
   'glacier-blue': {
@@ -25,24 +25,26 @@ const exteriorImages: Record<ExteriorColor, Record<WheelType, string>> = {
     aero: midnightBlackAero,
     sport: midnightBlackSport,
   },
-}
+};
 
 const colorLabels: Record<ExteriorColor, string> = {
   'glacier-blue': 'Glacier Blue',
   'lunar-white': 'Lunar White',
   'midnight-black': 'Midnight Black',
-}
+};
 
 const Success = () => {
-  const location = useLocation()
-  const navigate = useNavigate()
-  const order = location.state?.order as Order | undefined
+  const location = useLocation();
+  const navigate = useNavigate();
+  const order = location.state?.order as Order | undefined;
 
   if (!order) {
-    return <Navigate to="/" replace />
+    return <Navigate to="/" replace />;
   }
 
-  const isApproved = order.status === 'APROVADO'
+  const isApproved = order.status === 'APROVADO';
+  const isPending = order.status === 'EM_ANALISE';
+  const isRejected = order.status === 'REPROVADO';
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
@@ -54,11 +56,17 @@ const Success = () => {
       <div className="w-full max-w-2xl bg-card rounded-lg shadow-elegant-lg p-8 animate-scale-in">
         {/* Status Icon */}
         <div className="flex justify-center mb-6">
-          {isApproved ? (
+          {isApproved && (
             <div className="w-20 h-20 rounded-full bg-success/10 flex items-center justify-center">
               <CheckCircle className="w-12 h-12 text-success" />
             </div>
-          ) : (
+          )}
+          {isPending && (
+            <div className="w-20 h-20 rounded-full bg-amber-100 flex items-center justify-center">
+              <Clock className="w-12 h-12 text-amber-500" />
+            </div>
+          )}
+          {isRejected && (
             <div className="w-20 h-20 rounded-full bg-destructive/10 flex items-center justify-center">
               <XCircle className="w-12 h-12 text-destructive" />
             </div>
@@ -71,14 +79,17 @@ const Success = () => {
             data-testid="success-status"
             className={cn(
               'font-display text-3xl font-bold mb-2',
-              isApproved ? 'text-success' : 'text-destructive',
-            )}>
-            {isApproved ? 'Pedido Aprovado!' : 'Crédito Reprovado'}
+              isApproved ? 'text-success' : isPending ? 'text-amber-500' : 'text-destructive'
+            )}
+          >
+            {isApproved ? 'Pedido Aprovado!' : isPending ? 'Pedido em Análise!' : 'Pedido Reprovado!'}
           </h1>
           <p className="text-muted-foreground">
             {isApproved
               ? 'Seu pedido foi processado com sucesso. Em breve entraremos em contato.'
-              : 'Infelizmente seu crédito não foi aprovado. Tente novamente com pagamento à vista.'}
+              : isPending
+                ? 'Seu pedido foi recebido e está em análise de crédito. Em breve você receberá um retorno.'
+                : 'Infelizmente seu crédito não foi aprovado. Tente novamente com pagamento à vista.'}
           </p>
         </div>
 
@@ -87,9 +98,7 @@ const Success = () => {
           <div className="flex gap-4 items-start">
             <div className="w-32 h-20 bg-stage rounded-lg overflow-hidden flex-shrink-0">
               <img
-                src={
-                  exteriorImages[order.configuration.exteriorColor][order.configuration.wheelType]
-                }
+                src={exteriorImages[order.configuration.exteriorColor][order.configuration.wheelType]}
                 alt="Velô Sprint"
                 className="w-full h-full object-cover"
               />
@@ -97,9 +106,7 @@ const Success = () => {
             <div className="flex-1">
               <h3 className="font-display font-semibold text-lg">Velô Sprint</h3>
               <p className="text-sm text-muted-foreground">
-                {colorLabels[order.configuration.exteriorColor]} • Interior{' '}
-                {order.configuration.interiorColor.replace('-', ' ')} •{' '}
-                {order.configuration.wheelType} wheels
+                {colorLabels[order.configuration.exteriorColor]} • Interior {order.configuration.interiorColor.replace('-', ' ')} • {order.configuration.wheelType} wheels
               </p>
               <p className="mt-2 font-display font-semibold text-lg">
                 {formatPrice(order.totalPrice)}
@@ -143,19 +150,17 @@ const Success = () => {
             variant="outline"
             onClick={() => navigate('/lookup')}
             className="flex-1"
-            data-testid="goto-consultar">
+            data-testid="goto-consultar"
+          >
             Consultar Pedido
           </Button>
-          <Button
-            onClick={() => navigate('/configure')}
-            className="flex-1"
-            data-testid="configure-another">
+          <Button onClick={() => navigate('/configure')} className="flex-1" data-testid="configure-another">
             Configurar Outro
           </Button>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Success
+export default Success;
