@@ -103,7 +103,6 @@ test.describe('Checkout', () => {
 
   test.describe('Pagamento e confirmação', () => {
     test('deve criar um pedido com sucesso para pagamento à vista', async ({ page, app }) => {
-      
       const customer = {
         name: 'Rafael',
         lastname: 'Felipe',
@@ -129,6 +128,51 @@ test.describe('Checkout', () => {
 
       await app.checkout.selectPaymentMethod(customer.paymentMethod)
       await app.checkout.expectSummaryTotal(customer.totalPrice)
+      await app.checkout.acceptTerms()
+      await app.checkout.submit()
+
+      await expect(page).toHaveURL(/\/success/)
+      await expect(page.getByRole('heading', { name: 'Pedido Aprovado!' })).toBeVisible()
+    })
+
+    // prettier-ignore
+    test('deve aprovar automáticamente o crédito quando o score do CPF for maior que 700 no financiamento.', async ({ page, app }) => {
+      const customer = {
+        name: 'Kevin',
+        lastname: 'Durant',
+        email: 'durant@velo.dev',
+        document: '88070273054',
+        phone: '(13) 99999-9999',
+        store: 'Velô Paulista',
+        paymentMethod: 'Financiamento',
+        totalPrice: 'R$ 40.000,00',
+      }
+
+      await deleteOrderByEmail(customer.email)
+
+      await page.route('**/functions/v1/credit-analysis', async route => {
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({
+            status: 'Done',
+            score: 710
+          })
+        })
+      })
+
+      await page.goto('/')
+      await page.getByRole('link', { name: /Configure Agora/i }).click()
+
+      await app.configurator.expectPrice(customer.totalPrice)
+      await app.configurator.finishConfiguration()
+      await app.checkout.expectLoaded()
+
+      await app.checkout.fillCustomerlData(customer)
+      await app.checkout.selectStore(customer.store)
+
+      await app.checkout.selectPaymentMethod(customer.paymentMethod)
+      // await app.checkout.expectSummaryTotal(customer.totalPrice)
       await app.checkout.acceptTerms()
       await app.checkout.submit()
 
