@@ -1,19 +1,19 @@
-import { useState } from 'react';
-import { Search, Package, CheckCircle, Clock, XCircle, Loader2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { formatPrice, Order, ExteriorColor, WheelType } from '@/store/configuratorStore';
-import { getOrderByNumber } from '@/hooks/useOrders';
-import Header from '@/components/landing/Header';
+import { useState } from 'react'
+import { Search, Package, CheckCircle, Clock, XCircle, Loader2 } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { formatPrice, Order, ExteriorColor, WheelType } from '@/store/configuratorStore'
+import { getOrderByNumber } from '@/hooks/useOrders'
+import Header from '@/components/landing/Header'
 
-import glacierBlueAero from '@/assets/glacier-blue-aero-wheels.png';
-import glacierBlueSport from '@/assets/glacier-blue-sport-wheels.png';
-import lunarWhiteAero from '@/assets/lunar-white-aero-wheels.png';
-import lunarWhiteSport from '@/assets/lunar-white-sport-wheels.png';
-import midnightBlackAero from '@/assets/midnight-black-aero-wheels.png';
-import midnightBlackSport from '@/assets/midnight-black-sport-wheels.png';
+import glacierBlueAero from '@/assets/glacier-blue-aero-wheels.png'
+import glacierBlueSport from '@/assets/glacier-blue-sport-wheels.png'
+import lunarWhiteAero from '@/assets/lunar-white-aero-wheels.png'
+import lunarWhiteSport from '@/assets/lunar-white-sport-wheels.png'
+import midnightBlackAero from '@/assets/midnight-black-aero-wheels.png'
+import midnightBlackSport from '@/assets/midnight-black-sport-wheels.png'
 
 const carImages: Record<ExteriorColor, Record<WheelType, string>> = {
   'glacier-blue': {
@@ -28,41 +28,41 @@ const carImages: Record<ExteriorColor, Record<WheelType, string>> = {
     aero: midnightBlackAero,
     sport: midnightBlackSport,
   },
-};
+}
 
 const colorLabels: Record<ExteriorColor, string> = {
   'glacier-blue': 'Glacier Blue',
   'lunar-white': 'Lunar White',
   'midnight-black': 'Midnight Black',
-};
+}
 
 const OrderLookup = () => {
-  const [orderId, setOrderId] = useState('');
-  const [searchedOrder, setSearchedOrder] = useState<Order | null>(null);
-  const [notFound, setNotFound] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [orderId, setOrderId] = useState('')
+  const [searchedOrder, setSearchedOrder] = useState<Order | null>(null)
+  const [notFound, setNotFound] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleSearch = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setNotFound(false);
-    setSearchedOrder(null);
-    setIsLoading(true);
-    
-    const { order, error } = await getOrderByNumber(orderId);
-    
-    setIsLoading(false);
-    
+    e.preventDefault()
+    setNotFound(false)
+    setSearchedOrder(null)
+    setIsLoading(true)
+
+    const { order, error } = await getOrderByNumber(orderId)
+
+    setIsLoading(false)
+
     if (error) {
-      setNotFound(true);
-      return;
+      setNotFound(true)
+      return
     }
-    
+
     if (order) {
-      setSearchedOrder(order);
+      setSearchedOrder(order)
     } else {
-      setNotFound(true);
+      setNotFound(true)
     }
-  };
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -89,15 +89,11 @@ const OrderLookup = () => {
                   id="order-id"
                   placeholder="Ex: VLO-ABCD10"
                   value={orderId}
-                  onChange={(e) => setOrderId(e.target.value)}
+                  onChange={e => setOrderId(e.target.value)}
                   className="mt-1"
                 />
               </div>
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={!orderId.trim() || isLoading}
-              >
+              <Button type="submit" className="w-full" disabled={!orderId.trim() || isLoading}>
                 {isLoading ? (
                   <>
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -119,9 +115,7 @@ const OrderLookup = () => {
           <Card className="border-destructive/50 bg-destructive/5 animate-fade-in">
             <CardContent className="py-8 text-center">
               <XCircle className="w-12 h-12 text-destructive mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-foreground mb-2">
-                Pedido não encontrado
-              </h3>
+              <h3 className="text-lg font-medium text-foreground mb-2">Pedido não encontrado</h3>
               <p className="text-muted-foreground">
                 Verifique o número do pedido e tente novamente
               </p>
@@ -138,9 +132,7 @@ const OrderLookup = () => {
                   <Package className="w-5 h-5 text-muted-foreground" />
                   <div>
                     <p className="text-sm text-muted-foreground">Pedido</p>
-                    <p className="font-mono font-medium">
-                      {searchedOrder.id}
-                    </p>
+                    <p className="font-mono font-medium">{searchedOrder.id}</p>
                   </div>
                 </div>
                 <div
@@ -151,8 +143,7 @@ const OrderLookup = () => {
                       : searchedOrder.status === 'EM_ANALISE'
                         ? 'bg-amber-100 text-amber-700'
                         : 'bg-red-100 text-red-700'
-                  }`}
-                >
+                  }`}>
                   {searchedOrder.status === 'APROVADO' ? (
                     <CheckCircle className="w-4 h-4" />
                   ) : searchedOrder.status === 'EM_ANALISE' ? (
@@ -168,7 +159,11 @@ const OrderLookup = () => {
               {/* Car Image */}
               <div className="bg-secondary/30 rounded-lg p-4">
                 <img
-                  src={carImages[searchedOrder.configuration.exteriorColor][searchedOrder.configuration.wheelType]}
+                  src={
+                    carImages[searchedOrder.configuration.exteriorColor][
+                      searchedOrder.configuration.wheelType
+                    ]
+                  }
                   alt="Velô Sprint"
                   className="w-full max-w-xs mx-auto"
                 />
@@ -182,15 +177,21 @@ const OrderLookup = () => {
                 </div>
                 <div>
                   <p className="text-muted-foreground">Cor</p>
-                  <p className="font-medium">{colorLabels[searchedOrder.configuration.exteriorColor]}</p>
+                  <p className="font-medium">
+                    {colorLabels[searchedOrder.configuration.exteriorColor]}
+                  </p>
                 </div>
                 <div>
                   <p className="text-muted-foreground">Interior</p>
-                  <p className="font-medium capitalize">{searchedOrder.configuration.interiorColor.replace('-', ' ')}</p>
+                  <p className="font-medium capitalize">
+                    {searchedOrder.configuration.interiorColor.replace('-', ' ')}
+                  </p>
                 </div>
                 <div>
                   <p className="text-muted-foreground">Rodas</p>
-                  <p className="font-medium capitalize">{searchedOrder.configuration.wheelType} Wheels</p>
+                  <p className="font-medium capitalize">
+                    {searchedOrder.configuration.wheelType} Wheels
+                  </p>
                 </div>
               </div>
 
@@ -200,7 +201,9 @@ const OrderLookup = () => {
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
                     <p className="text-muted-foreground">Nome</p>
-                    <p className="font-medium">{searchedOrder.customer.name} {searchedOrder.customer.surname}</p>
+                    <p className="font-medium">
+                      {searchedOrder.customer.name} {searchedOrder.customer.lastname}
+                    </p>
                   </div>
                   <div>
                     <p className="text-muted-foreground">Email</p>
@@ -227,11 +230,12 @@ const OrderLookup = () => {
                     <p className="text-muted-foreground text-sm">
                       {searchedOrder.paymentMethod === 'avista' ? 'À Vista' : 'Financiamento 12x'}
                     </p>
-                    {searchedOrder.paymentMethod === 'financiamento' && searchedOrder.installmentValue && (
-                      <p className="text-sm text-muted-foreground">
-                        12x de {formatPrice(searchedOrder.installmentValue)}
-                      </p>
-                    )}
+                    {searchedOrder.paymentMethod === 'financiamento' &&
+                      searchedOrder.installmentValue && (
+                        <p className="text-sm text-muted-foreground">
+                          12x de {formatPrice(searchedOrder.installmentValue)}
+                        </p>
+                      )}
                   </div>
                   <p className="text-xl font-display font-semibold text-foreground">
                     {formatPrice(searchedOrder.totalPrice)}
@@ -243,7 +247,7 @@ const OrderLookup = () => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default OrderLookup;
+export default OrderLookup

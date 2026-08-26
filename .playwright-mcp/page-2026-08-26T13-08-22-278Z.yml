@@ -1,0 +1,34 @@
+- generic [ref=f2e2]:
+  - region "Notifications (F8)":
+    - list
+  - region "Notifications alt+T"
+  - generic [ref=f2e85]:
+    - link [ref=f2e86] [cursor=pointer]:
+      - /url: /
+      - img "Velô" [ref=f2e87]
+    - generic [ref=f2e88]:
+      - generic [ref=f2e94]:
+        - heading "Pedido Aprovado!" [level=1] [ref=f2e95]
+        - paragraph [ref=f2e96]: Seu pedido foi processado com sucesso. Em breve entraremos em contato.
+      - generic [ref=f2e98]:
+        - img "Velô Sprint" [ref=f2e100]
+        - generic [ref=f2e101]:
+          - heading "Velô Sprint" [level=3] [ref=f2e102]
+          - paragraph [ref=f2e103]: Midnight Black • Interior cream • aero wheels
+          - paragraph [ref=f2e104]: R$ 40.000,00
+      - generic [ref=f2e105]:
+        - generic [ref=f2e106]:
+          - paragraph [ref=f2e107]: Número do Pedido
+          - paragraph [ref=f2e108]: VLO-28C28J
+        - generic [ref=f2e109]:
+          - paragraph [ref=f2e110]: Cliente
+          - paragraph [ref=f2e111]: Rafael Felipe
+        - generic [ref=f2e112]:
+          - paragraph [ref=f2e113]: Email
+          - paragraph [ref=f2e114]: felipe@test.com
+        - generic [ref=f2e115]:
+          - paragraph [ref=f2e116]: Loja de Retirada
+          - paragraph [ref=f2e117]: Velô Paulista - Av. Paulista, 1000
+      - generic [ref=f2e118]:
+        - button "Consultar Pedido" [ref=f2e119] [cursor=pointer]
+        - button "Configurar Outro" [ref=f2e120] [cursor=pointer]
