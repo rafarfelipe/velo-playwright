@@ -119,7 +119,6 @@ test.describe('Checkout', () => {
 
       await deleteOrderByEmail(customer.email)
 
-
       await app.configurator.expectPrice(customer.totalPrice)
       await app.configurator.finishConfiguration()
       await app.checkout.expectLoaded()
@@ -193,7 +192,7 @@ test.describe('Checkout', () => {
 
       await app.checkout.expectResult('Pedido em Análise')
     })
-    test('deve reprovar o crédito quando o score do CPF for menor ou igual a 500 no financiamento com entrada menor que 50%', async ({ app }) => {
+    test('deve reprovar o crédito quando o score do CPF for menor ou igual a 500 no financiamento sem entrada', async ({ app }) => {
       const customer = {
         name: 'Clark',
         lastname: 'Kent',
@@ -222,7 +221,7 @@ test.describe('Checkout', () => {
 
       await app.checkout.expectResult('Pedido Reprovado!')
     })
-    test('deve aprovado o crédito quando o score do CPF for menor ou igual a 500 no financiamento com entrada igual a 50%', async ({ app }) => {
+    test('deve aprovado o crédito quando o score do CPF for menor ou igual a 500 no financiamento com entrada igual a 50%', async ({app}) => {
       const customer = {
         name: 'Bruce',
         lastname: 'Wayne',
@@ -283,6 +282,38 @@ test.describe('Checkout', () => {
       await app.checkout.submit()
 
       await app.checkout.expectResult('Pedido Aprovado!')
+    })
+
+    test('deve reprovar o crédito quando o score do CPF for menor ou igual a 500 no financiamento com entrada menor que 50%', async ({ app }) => {
+      const customer = {
+        name: 'Diana',
+        lastname: 'Prince',
+        email: 'diana@themiscira.com',
+        document: '11144477735',
+        phone: '(11) 99999-9999',
+        store: 'Velô Paulista',
+        paymentMethod: 'Financiamento',
+        totalPrice: 'R$ 40.000,00',
+        downPayment: '10000',
+      }
+
+      await deleteOrderByEmail(customer.email)
+
+      await app.mock.creditAnalysis(500)
+
+      await app.configurator.expectPrice(customer.totalPrice)
+      await app.configurator.finishConfiguration()
+      await app.checkout.expectLoaded()
+
+      await app.checkout.fillCustomerlData(customer)
+      await app.checkout.selectStore(customer.store)
+
+      await app.checkout.selectPaymentMethod(customer.paymentMethod)
+      await app.checkout.fillDownPayment(customer.downPayment)
+      await app.checkout.acceptTerms()
+      await app.checkout.submit()
+
+      await app.checkout.expectResult('Pedido Reprovado!')
     })
   })
 })
