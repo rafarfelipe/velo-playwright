@@ -29,3 +29,31 @@ dist-ssr
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+
+# Variáveis de ambiente
+.env
+.env.local
+.env.*.local
+
+# Cobertura de testes
+coverage/
+*.lcov
+
+# Build/Cache
+.cache/
+.parcel-cache/
+.vite/
+.eslintcache
+
+# Sistema operacional
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Histórico/backup
+*.bak
+*.tmp
+*.orig
+
+# TypeScript
+*.tsbuildinfo
