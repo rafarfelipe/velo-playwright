@@ -1,160 +1,128 @@
-# Velô Sprint - Configurador de Veículo Elétrico
+<h1 align="center">Velo E2E Testing Automation</h1>
 
-Aplicação web em React para configuração e compra do veículo elétrico **Velô Sprint**.
+<p align="center">
+  <img alt="Status" src="https://img.shields.io/badge/Status-Concluído-success?style=for-the-badge">
+  <img alt="Playwright" src="https://img.shields.io/badge/Playwright-E2E_Tests-2EAD33?style=for-the-badge&logo=playwright">
+  <img alt="License" src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge">
+</p>
 
-## Sobre o Projeto
+<br>
 
-Uma SPA (Single Page Application) que permite:
-- Personalizar cores, rodas e opcionais do veículo
-- Calcular preços em tempo real
-- Realizar pedidos com análise de crédito
-- Consultar status de pedidos
-
-**Especificações do Velô Sprint:** 450 km de autonomia | 0-100 km/h em 3.2s | 500 cv
-
----
-
-## Stack Tecnológica
-
-| Categoria | Tecnologias |
-|-----------|-------------|
-| **Frontend** | React 18, TypeScript, Vite, Tailwind CSS, shadcn/ui |
-| **Estado** | Zustand (global), React Hook Form (formulários) |
-| **Validação** | Zod |
-| **Data Fetching** | TanStack Query |
-| **Backend** | Supabase (PostgreSQL + Edge Functions) |
+## 📌 Índice
+- [Sobre o Projeto](#-sobre-o-projeto)
+- [Stack de Tecnologias](#-stack-de-tecnologias)
+- [Como Executar](#-como-executar)
+- [Estrutura do Projeto](#-estrutura-do-projeto)
+- [Contato](#-contato)
 
 ---
 
-## Instalação
+## 🎯 Sobre o Projeto
 
+Este projeto tem como foco principal garantir a qualidade da aplicação **Velo**, desenvolvida em React e Supabase, através de testes **End-to-End (E2E)** utilizando o **Playwright**.
+
+A abordagem adotada visa simular o comportamento real do usuário ponta-a-ponta, prevenindo regressões, validando a integração entre o frontend e backend (Supabase), e atestando a confiabilidade das principais jornadas de uso.
+
+**O que foi testado e por quê:**
+- **Fluxos Críticos de Negócio:** Validamos a experiência do usuário desde o login até as ações principais, garantindo que o coração da aplicação funcione sem interrupções.
+- **Resiliência de UI/UX:** Verificação de carregamento de componentes assíncronos e estados de tela (loading, sucesso, erro), reduzindo possíveis falhas de interface.
+- **Validação de Formulários:** Uso de dados dinâmicos para assegurar que regras de validação (Zod) e bloqueios funcionem conforme os requisitos de negócio.
+
+---
+
+## 🛠 Stack de Tecnologias
+
+O projeto e os testes foram construídos utilizando as seguintes ferramentas:
+
+### Automação de Testes
+![Playwright](https://img.shields.io/badge/Playwright-2EAD33?style=for-the-badge&logo=playwright&logoColor=white) 
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white) 
+
+### Aplicação Principal
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Vite](https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Supabase](https://img.shields.io/badge/Supabase-181818?style=for-the-badge&logo=supabase&logoColor=white)
+
+---
+
+## 🚀 Como Executar
+
+Siga as instruções abaixo para rodar o projeto e os testes automatizados localmente em sua máquina.
+
+### Pré-requisitos
+Certifique-se de ter os seguintes itens instalados:
+- [Node.js](https://nodejs.org/) (Versão 18+)
+- Gerenciador de pacotes ([Yarn](https://yarnpkg.com/) ou npm)
+
+### Passo a Passo
+
+1. **Clone o repositório:**
 ```bash
-# Instalar dependências
+git clone https://github.com/rafarfelipe/velo-playwright.git
+cd velo-playwright
+```
+
+2. **Instale as dependências:**
+```bash
 yarn install
-
-# Rodar em desenvolvimento
-yarn run dev
+# ou npm install
 ```
 
-Acesse: `http://localhost:5173`
-
----
-
-## Configuração do Supabase
-
-### 1. Criar Projeto
-
-1. Acesse [supabase.com](https://supabase.com) e crie uma conta
-2. Clique em **New Project**
-3. Escolha um nome e senha para o banco
-4. Aguarde a criação (~2 minutos)
-
-### 2. Variáveis de Ambiente
-
-Crie o arquivo `.env` na raiz do projeto:
-
-```env
-VITE_SUPABASE_PROJECT_ID="seu_project_id"
-VITE_SUPABASE_PUBLISHABLE_KEY="sua_chave_anon_publica"
-VITE_SUPABASE_URL="https://seu_project_id.supabase.co"
-```
-
-> Encontre essas informações em: **Project Settings → API**
-
-### 3. Deploy (banco + functions)
-
+3. **Instale os navegadores do Playwright:**
 ```bash
-# Instalar CLI
-yarn add supabase -D
-
-# Login e vincular projeto
-yarn supabase login
-yarn supabase link --project-ref zlnlfveekfzpxppxxfym
-
-# Aplicar migrações (cria tabelas e RLS)
-yarn supabase db push
-
-# Deploy das Edge Functions
-yarn supabase functions deploy
+yarn playwright install
+# ou npx playwright install
 ```
 
-Pronto! O banco e as functions estarão configurados.
-
----
-
-## Estrutura Principal
-
-```
-src/
-├── pages/           # Páginas da aplicação
-├── components/      # Componentes React
-│   ├── configurator/   # Configurador do carro
-│   ├── landing/        # Landing page
-│   └── ui/             # Componentes shadcn/ui
-├── store/           # Estado global (Zustand)
-├── hooks/           # Hooks customizados
-└── integrations/    # Cliente Supabase
-```
-
----
-
-## Rotas
-
-| Rota | Descrição |
-|------|-----------|
-| `/` | Landing page |
-| `/configure` | Configurador do veículo |
-| `/order` | Checkout/Pedido |
-| `/success` | Confirmação do pedido |
-| `/lookup` | Consulta de pedidos |
-
----
-
-## Modelo de Preços
-
-- **Preço base:** R$ 40.000
-- **Rodas Sport:** +R$ 2.000
-- **Precision Park:** +R$ 5.500
-- **Flux Capacitor:** +R$ 5.000
-- **Financiamento:** 12x com juros de 2% a.m.
-
----
-
-## Banco de Dados
-
-**Tabela `orders`** — campos principais:
-- `order_number` — Formato: VLO-XXXXXX
-- `color`, `wheel_type`, `optionals` — Configuração
-- `customer_name`, `customer_email`, `customer_cpf` — Cliente
-- `payment_method`, `total_price` — Pagamento
-- `status` — pending, approved, rejected, analysis
-
----
-
-## Análise de Crédito
-
-| Score | Resultado |
-|-------|-----------|
-| > 700 | Aprovado |
-| 501-700 | Em análise |
-| ≤ 500 | Reprovado |
-
-*Se entrada ≥ 50% do total, aprova mesmo com score < 700*
-
----
-
-## Fluxo Principal
-
-```
-Landing → Configurador → Checkout → Análise de Crédito → Confirmação
-```
-
----
-
-## Scripts
-
+4. **Execute os testes em modo Headless (padrão):**
 ```bash
-npm run dev      # Desenvolvimento
-npm run build    # Build de produção
-npm run lint     # Verificar código
+yarn playwright test
+# ou npx playwright test
 ```
+
+5. **Execute os testes com a Interface Gráfica (UI Mode) do Playwright:**
+```bash
+yarn playwright test --ui
+# ou npx playwright test --ui
+```
+
+6. **Para visualizar o relatório de testes (HTML Report):**
+```bash
+yarn playwright show-report
+# ou npx playwright show-report
+```
+
+---
+
+## 📁 Estrutura do Projeto
+
+Abaixo apresento a organização arquitetural do repositório, separando claramente o código da aplicação e a suíte de automação:
+
+```text
+velo-playwright/
+│
+├── playwright/                  # 🤖 Suíte de testes automatizados E2E
+│   ├── e2e/                     # Especificações dos testes de ponta-a-ponta (Specs)
+│   └── support/                 # Arquivos de suporte (Fixtures, Utils, Page Objects)
+│
+├── src/                         # 💻 Código-fonte da aplicação React
+├── supabase/                    # 🗄️ Configurações e migrations do banco de dados
+│
+├── playwright.config.ts         # ⚙️ Configurações globais do Playwright (Navegadores, Retries, Timeouts)
+├── vite.config.ts               # ⚙️ Configurações do bundler Vite
+├── tailwind.config.ts           # 🎨 Configurações de estilização do Tailwind
+├── package.json                 # 📦 Dependências e scripts do projeto
+└── README.md                    # 📄 Documentação (Você está aqui!)
+```
+
+---
+
+## 📞 Contato
+
+Ficou com alguma dúvida ou gostaria de debater sobre automação e qualidade de software? Vamos nos conectar!
+
+**Autor:** Rafael Felipe
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/rafaelrfelipe/) 
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/rafarfelipe)
