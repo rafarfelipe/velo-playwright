@@ -1,9 +1,9 @@
 <h1 align="center">Velo E2E Testing Automation</h1>
 
 <p align="center">
-  <img alt="Status" src="https://img.shields.io/badge/Status-Concluído-success?style=for-the-badge">
-  <img alt="Playwright" src="https://img.shields.io/badge/Playwright-E2E_Tests-2EAD33?style=for-the-badge&logo=playwright">
-  <img alt="License" src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge">
+  <img alt="Status" src="https://img.shields.io/badge/Status-Concluído-success?style=flat">
+  <img alt="Playwright" src="https://img.shields.io/badge/Playwright-E2E_Tests-2EAD33?style=flat&logo=playwright">
+  <img alt="License" src="https://img.shields.io/badge/License-MIT-blue?style=flat">
 </p>
 
 <br>
@@ -63,14 +63,14 @@ A aplicação aplica regras automáticas para aprovação do financiamento:
 O projeto e os testes foram construídos utilizando as seguintes ferramentas:
 
 ### Automação de Testes
-![Playwright](https://img.shields.io/badge/Playwright-2EAD33?style=for-the-badge&logo=playwright&logoColor=white) 
-![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white) 
+![Playwright](https://img.shields.io/badge/Playwright-2EAD33?style=flat&logo=playwright&logoColor=white) 
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat&logo=typescript&logoColor=white) 
 
 ### Aplicação Principal
-![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-![Vite](https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![Supabase](https://img.shields.io/badge/Supabase-181818?style=for-the-badge&logo=supabase&logoColor=white)
+![React](https://img.shields.io/badge/React-20232A?style=flat&logo=react&logoColor=61DAFB)
+![Vite](https://img.shields.io/badge/Vite-B73BFE?style=flat&logo=vite&logoColor=FFD62E)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat&logo=tailwind-css&logoColor=white)
+![Supabase](https://img.shields.io/badge/Supabase-181818?style=flat&logo=supabase&logoColor=white)
 
 ---
 
@@ -202,5 +202,5 @@ Ficou com alguma dúvida ou gostaria de debater sobre automação e qualidade de
 
 **Autor:** Rafael Felipe
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/rafaelrfelipe/) 
-[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/rafarfelipe)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/rafaelrfelipe/) 
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=flat&logo=github&logoColor=white)](https://github.com/rafarfelipe)
